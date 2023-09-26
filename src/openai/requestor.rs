@@ -45,7 +45,7 @@ mod test {
   use super::*;
 
   #[tokio::test]
-  async fn it_shouldpost_to_openai_api() {
+  async fn it_should_post_to_openai_api() {
     let api_key: String = String::from("12345abcd");
     let body_request: String = String::from(r#"{"prompt": "Once upon a time", "max_tokens": 5}"#);
     let body_response: String = String::from(r#"{"id": "cmpl-3QJ5nq5Z5j5J5", "object": "text_completion", "created": 1619266792, "model": "davinci:2020-05-03", "choices": [{"text": " a", "index": 0, "logprobs": null, "finish_reason": "length"}]}"#);
