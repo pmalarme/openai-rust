@@ -126,8 +126,6 @@ impl ChatCompletion {
 
   pub async fn create(&mut self, client: Client, model_id: &str, api_version: Option<&str>) -> Result<String, Box<dyn std::error::Error>> {
     let request_body = serde_json::to_string(self)?;
-    println!("{:?}", request_body);
-
     // Model id is required only for Open AI
     if client.api_type == ApiType::OpenAI {
       self.model = Some(model_id.to_string());
