@@ -26,6 +26,20 @@ impl Client {
     }
   }
 
+  // TODO add test
+  pub fn from_env(api_type: ApiType) -> Result<Client, Box<dyn std::error::Error>> {
+    let auth: Auth = Auth::from_env()?;
+    let mut endpoint: String = std::env::var("OPENAI_API_ENDPOINT")?;
+    endpoint = Client::update_endpoint_to_have_slash_add_the_end(&endpoint);
+    let http_client = reqwest::Client::new();
+    Ok(Client {
+      endpoint,
+      api_type,
+      auth,
+      http_client,
+    })
+  }
+
   pub fn get_api_key(&self) -> String {
     self.auth.api_key.clone()
   }
@@ -34,15 +48,17 @@ impl Client {
     self.api_type.clone()
   }
 
+  // Todo update the errors and document the default version + that the model is only used for Azure OpenAI
   pub fn generate_api_uri(&self, api_path: &str, model_id: Option<&str>, api_version: Option<&str>) -> Result<String, Box<dyn std::error::Error>> {
     match self.api_type {
       ApiType::Azure | ApiType::AzureAD => {
         match model_id {
           Some(model_id) => {
-            match api_version {
-              Some(api_version) => Ok(format!("{}openai/deployments/{}/{}?api-version={}", self.endpoint, model_id, api_path, api_version)),
-              None => Err("api_version is missing".into()),
-            }
+            let api_version: &str = match api_version {
+              Some(api_version) => api_version,
+              None => &"2023-05-15",
+            };
+            Ok(format!("{}openai/deployments/{}/{}?api-version={}", self.endpoint, model_id, api_path, api_version))
           },
           None => Err("model_id is missing".into()),
         }

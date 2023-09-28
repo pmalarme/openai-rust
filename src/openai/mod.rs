@@ -1,8 +1,9 @@
 mod api_type;
 mod auth;
-mod client;
-pub mod requestor;
 pub mod chat;
+mod client;
+pub mod error;
+pub mod requestor;
 
 pub use api_type::ApiType;
 pub use auth::Auth;

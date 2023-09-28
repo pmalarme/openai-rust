@@ -1,6 +1,6 @@
 use serde::{Serialize, Deserialize};
 
-use crate::openai::chat::{FunctionCall, Role};
+use crate::openai::chat::model::{FunctionCall, Role};
 
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 pub struct ChatMessage {
