@@ -2,12 +2,21 @@ pub struct Auth {
   pub api_key: String,
 }
 
+// TODO: Implement Azure AD auth
+
 impl Auth {
   pub fn new(api_key: String) -> Auth {
     Auth { api_key }
   }
 
-  // TODO Update the error
+  /// Create auth with api_key set to the value
+  /// of the environment variable OPENAI_API_KEY.
+  /// 
+  /// # Errors
+  /// 
+  /// This function will return an error if OPENAI_API_KEY environment
+  /// variable is not set.
+  /// 
   pub fn from_env() -> Result<Self, std::env::VarError> {
     let api_key = std::env::var("OPENAI_API_KEY")?;
     Ok(Self::new(api_key))
@@ -52,5 +61,4 @@ mod tests {
       Err(_) => assert!(false, "Auth should be created with environment variable")
     }
   }
-
 }
